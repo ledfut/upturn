@@ -50,7 +50,7 @@ contract InitalRightsSale {
         tokensForSale[artistTokenAddress] = artistToken.totalSupply() * percentageForSale / 100;
 
         //transfer liquidity pool tokens
-        artistToken.transfer(address(artistEx), percentageForLiquidity, false);
+        artistToken.transfer(address(artistExchange), percentageForLiquidity, false);
         //transfer artist their tokens
         artistToken.transfer(_artistAddress, artistKeeps, false);
     }
