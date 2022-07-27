@@ -1,11 +1,14 @@
 pragma solidity 0.8.15;
 import "./ArtistRightsToken.sol";
+import "../LiquidityPools/Exchange.sol";
 
 contract InitalRightsSale {
     //Artist address => Artist Token
     mapping (address => address) artistAddressToToken;
     //Artist token   => Artist Address
     mapping (address => address) artistTokenToAddress;
+    //Artist token   => token exchange
+    mapping (address => address) artistTokenExchange;
     mapping (address => uint) tokensForSale;
     mapping (address => bool) isTokenInSale;
 
@@ -29,6 +32,8 @@ contract InitalRightsSale {
         
         ArtistRightsToken artistToken = new ArtistRightsToken(_tokenName, _tokenTicker, _tokenSupply, _royaltyPercentage, address(this));
         address artistTokenAddress = address(artistToken);
+        Exchange artistExchange = new Exchange(_artistAddress, artistTokenAddress);
+        artistTokenExchange[_artistAddress] = address(artistExchange);
         
         artistAddressToToken[_artistAddress] = artistTokenAddress;
         artistTokenToAddress[artistTokenAddress] = _artistAddress;
@@ -45,7 +50,7 @@ contract InitalRightsSale {
         tokensForSale[artistTokenAddress] = artistToken.totalSupply() * percentageForSale / 100;
 
         //transfer liquidity pool tokens
-        artistToken.transfer(0x1000000000000000000000000000000000000000, percentageForLiquidity, false);
+        artistToken.transfer(address(artistEx), percentageForLiquidity, false);
         //transfer artist their tokens
         artistToken.transfer(_artistAddress, artistKeeps, false);
     }

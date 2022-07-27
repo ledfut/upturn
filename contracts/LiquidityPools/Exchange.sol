@@ -3,27 +3,30 @@ pragma solidity 0.8.15;
 import "@lukso/lsp-smart-contracts/contracts/LSP7DigitalAsset/LSP7DigitalAsset.sol";
 
 contract Exchange {
-    address deployer;
     address public tokenAddress;
+    address public artistAddress;
+
+    address deployer;
 
     uint nativeTokenBalance;
     uint tokenBalance;
 
-    constructor (address _tokenAddress) {
+    constructor (address _tokenAddress, address _artistAddress) {
         deployer = msg.sender;
         tokenAddress = _tokenAddress;
+        artistAddress = _artistAddress;
     }
 
     receive() external payable {nativeTokenBalance += msg.value;}
 
     function addLiquidity(uint _tokenAmount) public payable {
         //this contract must be approved to spend tokens before calling this function
-        LSP7DigitalAsset Token = LSP7DigitalAsset(tokenAddress);
-        
-        nativeTokenBalance += msg.value;
-        tokenBalance += _tokenAmount;
-        //SET FALSE
-        Token.transfer(msg.sender, address(this), _tokenAmount, true, "0x");
+       LSP7DigitalAsset Token = LSP7DigitalAsset(tokenAddress);
+       
+       nativeTokenBalance += msg.value;
+       tokenBalance += _tokenAmount;
+       //SET FALSE
+       Token.transfer(msg.sender, address(this), _tokenAmount, true, "0x");
     }
 
     function nativeToTokenSwap() public payable returns (uint) {

@@ -26,6 +26,7 @@ contract Marketplace {
 
     function buyNft(address _nftAddress, bytes32 _nftID) public payable {
         LSP8IdentifiableDigitalAsset NFT = LSP8IdentifiableDigitalAsset(_nftAddress);
+        
         require(NFT.tokenOwnerOf(_nftID) == address(this), "This NFT is not listed on the marketplace");
         require(msg.value == listingPrice[_nftAddress][_nftID],"You have not sent the exact amount to buy this NFT");
 

@@ -2,7 +2,7 @@ const { expect } = require("chai");
 const { ethers, network } = require("hardhat");
 const { balance, expectRevert} = require("@openzeppelin/test-helpers");
 // NEED TO UPDATE FOR PROFILES INSTEAD OF ADDRESSES
-describe.only("Artist rights token functionality", async() => {
+describe("Artist rights token functionality", async() => {
     let ArtistToken;
     let ArtistTokenSale;
 
