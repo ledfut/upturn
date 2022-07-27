@@ -12,7 +12,6 @@ contract ArtistRightsToken is LSP7DigitalAsset {
     mapping(address => uint) collectedRoyalties;
     mapping(address => uint) holdersIndex;
 
-
     constructor(string memory _tokenName, string memory _tokenSymbol, uint _supply, uint _royaltyPercentage, address _initalRightsSaleAddress) LSP7DigitalAsset(_tokenName, _tokenSymbol, _initalRightsSaleAddress, false) {
         //SET TO FALSE
         _mint(_initalRightsSaleAddress, _supply, true, "0x");
@@ -20,9 +19,6 @@ contract ArtistRightsToken is LSP7DigitalAsset {
         saleContract = msg.sender;
 
         holders.push(saleContract);
-    }
-    function transferTokens() public view returns(uint) {
-        return 123;
     }
 
     function transfer(address _receiverAddress, uint _amount, bool _royaltiesEnabled) public {

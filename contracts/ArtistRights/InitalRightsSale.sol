@@ -30,7 +30,7 @@ contract InitalRightsSale {
         ArtistRightsToken artistToken = new ArtistRightsToken(_tokenName, _tokenTicker, _tokenSupply, _royaltyPercentage, address(this));
         address artistTokenAddress = address(artistToken);
         
-        artistAddressToToken[_artistAddress] = address(artistToken);
+        artistAddressToToken[_artistAddress] = artistTokenAddress;
         artistTokenToAddress[artistTokenAddress] = _artistAddress;
         isTokenInSale[artistTokenAddress] = true;
         pricePerToken[artistTokenAddress] = _pricePerToken;
@@ -62,7 +62,6 @@ contract InitalRightsSale {
 
         artistToken.transfer(msg.sender, amount, false);
     }
-
 
     function addRoyalties(uint _amount) public {
         //function to be called by artist tokens only
