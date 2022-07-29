@@ -3,18 +3,23 @@ pragma solidity 0.8.15;
 import "@lukso/lsp-smart-contracts/contracts/LSP7DigitalAsset/LSP7DigitalAsset.sol";
 
 contract Exchange {
-    address public tokenAddress;
-    address public artistAddress;
+    address tokenAddress;
+    address artistAddress;
 
     address deployer;
 
     uint nativeTokenBalance;
     uint tokenBalance;
+    uint deployedTime;
+    uint claimTimeLimit = 2592000; //1 month
+    uint artistClaimedAmount = 0;
+    uint claimAmount = 10;
 
     constructor (address _tokenAddress, address _artistAddress) {
         deployer = msg.sender;
         tokenAddress = _tokenAddress;
         artistAddress = _artistAddress;
+        deployedTime = block.timestamp;
     }
 
     receive() external payable {nativeTokenBalance += msg.value;}
@@ -75,6 +80,17 @@ contract Exchange {
         return (nativeOut);
     }
 
+    function artistClaim() public {
+        require(msg.sender == artistAddress, "Only the artist can call this function");
+        uint time = block.timestamp - deployedTime;
+
+        // always rounds down
+        uint claimMultiplyer = deployedTime / claimTimeLimit;
+        uint claimAmount = claimMultiplyer * claimAmount;
+
+        LSP7DigitalAsset(tokenAddress).transfer(address(this), artistAddress, claimAmount, true, "0x");
+    }
+
     function getNativeTokenBalance() public view returns(uint) {
         return nativeTokenBalance;
     }
@@ -82,5 +98,4 @@ contract Exchange {
     function getTokenBalance() public view returns(uint) {
         return tokenBalance;
     }
-
 }

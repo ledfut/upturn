@@ -1,82 +1,66 @@
 pragma solidity 0.8.15;
-import "./ArtistRightsToken.sol";
 import "../LiquidityPools/Exchange.sol";
-
+import "./ArtistRightsToken.sol";
 contract InitalRightsSale {
-    //Artist address => Artist Token
-    mapping (address => address) artistAddressToToken;
-    //Artist token   => Artist Address
-    mapping (address => address) artistTokenToAddress;
-    //Artist token   => token exchange
-    mapping (address => address) artistTokenExchange;
-    mapping (address => uint) tokensForSale;
-    mapping (address => bool) isTokenInSale;
+    mapping (address => Sale) artistTokenSales;
 
-    mapping (address => uint) pricePerToken;
-    mapping (address => uint) artistBalance;
-    mapping (address => uint) collectedRoyalties; 
+    struct Sale {
+        address ArtistTokenAddress;
+        address payable ExchangeAddress;
+        uint PriceForTokens;
+        bool IsTokensForSale;
 
-    address contractDeployer;
-
-    constructor() {
-        contractDeployer = msg.sender;
+        uint tokensForLiquidity;
+        uint nativeTokensForLiquidity;
+        uint tokensForSale;
     }
 
-    modifier onlyContractDeployer() {
-        require(msg.sender == contractDeployer, "Only the contract deployer of this contract can call this function");
-        _;
+    function CreateSale(address _artistAddress, address _artistTokenAddress, address payable _exchangeAddress, uint _royaltyPercentage, uint _pricePerToken) public onlyContractDeployer {
+        require(msg.sender == _artistAddress, "You must be the artist to call this function");
+        require(artistTokenSales[_artistAddress].ArtistAddress == 0x0000000000000000000000000000000000000000, "Artist token sale is already created");
+
+        Sale memory newSale;
+
+        newSale.ArtistTokenAddress = _artistTokenAddress;
+        newSale.ExchangeAddress = _exchangeAddress;
+        newSale.PriceForTokens = _pricePerToken;
+        newSale.IsTokensForSale = false;
+
+        artistTokenSales[_artistAddress] = newSale;
     }
 
-    function CreateSale(address _artistAddress, uint _royaltyPercentage, uint _pricePerToken, uint _percentageArtistKeeps, uint _percentageForLiquidity, string memory _tokenName, string memory _tokenTicker, uint _tokenSupply) public onlyContractDeployer {
-        require(artistAddressToToken[_artistAddress] == 0x0000000000000000000000000000000000000000, "Artist token is already created");
+    function StartSale(address _artistAddress, uint _percentageArtistKeeps, uint _percentageForLiquidity) public {
+        require (msg.sender == _artistAddress, "only the artist can call this function");
+        require(artistTokenSales[_artistAddress].isTokenInSale == false, "Artist Token must not be in sale");
+
+        ArtistRightsToken artistToken = ArtistRightsToken(artistTokenSales[_artistAddress].artistTokenAddress);
+        artistToken.mintForTokenSale();
+
+        uint tokensArtistReceives = artistToken.totalSupply() * _percentageArtistKeeps / 100;
+        artistToken.transfer(_artistAddress, tokensArtistReceives, false);
+
+        //contract holds liquidity tokens until sale is complete
+        artistTokenSales[_artistAddress].tokenAmountForLiquidity = artistToken.totalSupply() * _percentageForLiquidity / 100;
+        artistTokenSales[_artistAddress].nativeTokensForLiquidity = tokensForSale[artistTokenAddress] * pricePerToken[artistTokenAddress];
+        artistTokenSales[_artistAddress].tokensForLiquidity = tokenAmountForLiquidity;
+        artistTokenSales[_artistAddress].tokensForSale = artistToken.balanceOf(address(this)) - tokenAmountForLiquidity;
+        artistTokenSales[_artistAddress].isTokenInSale = true;
+    }
+
+    function BuyArtistTokens(address _artistAddress) public payable{
+        require (artistTokenSale[_artistAddress].isTokenInSale == true, "Token is currently not for sale");
+        require (artistTokenSale[_artistAddress].tokenPrice <= msg.value , "Token price is greater than native token that has been sent");
         
-        ArtistRightsToken artistToken = new ArtistRightsToken(_tokenName, _tokenTicker, _tokenSupply, _royaltyPercentage, address(this));
-        address artistTokenAddress = address(artistToken);
-        Exchange artistExchange = new Exchange(_artistAddress, artistTokenAddress);
-        artistTokenExchange[_artistAddress] = address(artistExchange);
-        
-        artistAddressToToken[_artistAddress] = artistTokenAddress;
-        artistTokenToAddress[artistTokenAddress] = _artistAddress;
-        isTokenInSale[artistTokenAddress] = true;
-        pricePerToken[artistTokenAddress] = _pricePerToken;
-        // return 50% of supply to the artist
+        ArtistRightsToken artistToken = ArtistRightsToken (artistTokenSales[_artistAddress]);
+        uint buyAmount = artistTokenSale[_artistAddress].tokenPrice * msg.value;
+        require (amount <= artistToken.balanceOf(address(this)), "Not enough tokens left to buy");
 
-        uint artistKeeps = artistToken.totalSupply() * _percentageArtistKeeps / 100;
-        uint percentageForLiquidity = artistToken.totalSupply() * _percentageForLiquidity / 100;
+        artistTokenSale[_artistAddress].tokensForSale -= buyAmount;
+        artistToken.transfer(msg.sender, buyAmount, false);
 
-        uint percentageForSale = 100 - _percentageArtistKeeps - _percentageForLiquidity;
-
-        //set amount of tokens sale to the public
-        tokensForSale[artistTokenAddress] = artistToken.totalSupply() * percentageForSale / 100;
-
-        //transfer liquidity pool tokens
-        artistToken.transfer(address(artistExchange), percentageForLiquidity, false);
-        //transfer artist their tokens
-        artistToken.transfer(_artistAddress, artistKeeps, false);
+        if (artistTokenSale[_artistAddress].tokensForSale == 0) {
+            Exchange artistExchange = Exchange(_artistAddress);
+            artistExchange.addLiquidity{value: artistTokenSales[_artistAddress].nativeTokensForLiquidity}(artistTokenSales[_artistAddress].tokensForLiquidity);
+        }
     }
-
-    function BuyArtistTokens(address _tokenAddress) public payable{
-        require (isTokenInSale[_tokenAddress] == true, "Token is not for sale");
-        
-        uint tokenPrice = pricePerToken[_tokenAddress];
-        require (msg.value >= tokenPrice, "Token price is greater than native token that has been sent");
-
-        uint amount = tokenPrice * msg.value;
-        ArtistRightsToken artistToken = ArtistRightsToken (_tokenAddress);
-        require (amount <= artistToken.balanceOf(address(this)), "Not enough tokens to buy");
-
-        artistToken.transfer(msg.sender, amount, false);
-    }
-
-    function addRoyalties(uint _amount) public {
-        //function to be called by artist tokens only
-        require (artistTokenToAddress[msg.sender] != 0x0000000000000000000000000000000000000000, "this function can only be called by artist tokens");
-        collectedRoyalties[msg.sender] += _amount;
-    }
-
-    //for testing
-    function getArtistToken(address _artistAddress) public view returns(address) {
-        return artistAddressToToken[_artistAddress];
-    }
-
 }
