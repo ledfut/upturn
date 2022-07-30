@@ -48,20 +48,6 @@ contract Exchange {
         return (tokensOut);
     }
 
-    function nativeToTokenSwapNonPayable(uint _nativeAmount) public returns (uint) {
-        LSP7DigitalAsset Token = LSP7DigitalAsset(tokenAddress);
-
-        uint invariant = nativeTokenBalance * tokenBalance;
-        nativeTokenBalance += _nativeAmount;
-        uint tokenBalDifference = invariant / nativeTokenBalance;
-        uint tokensOut = tokenBalance - tokenBalDifference;
-        tokenBalance -= tokensOut;
-        
-        //SET FALSE
-        Token.transfer(address(this), msg.sender, tokensOut, true, "0x");
-        return (tokensOut);
-    }
-
     function tokenToNativeSwap(uint _tokenAmount) public returns (uint){
         //user must approve this contract and token amount before calling this function
         LSP7DigitalAsset Token = LSP7DigitalAsset(tokenAddress);
@@ -78,17 +64,6 @@ contract Exchange {
 
         payable(msg.sender).transfer(nativeOut);
         return (nativeOut);
-    }
-
-    function artistClaim() public {
-        require(msg.sender == artistAddress, "Only the artist can call this function");
-        uint time = block.timestamp - deployedTime;
-
-        // always rounds down
-        uint claimMultiplyer = deployedTime / claimTimeLimit;
-        uint claimAmount = claimMultiplyer * claimAmount;
-
-        LSP7DigitalAsset(tokenAddress).transfer(address(this), artistAddress, claimAmount, true, "0x");
     }
 
     function getNativeTokenBalance() public view returns(uint) {
