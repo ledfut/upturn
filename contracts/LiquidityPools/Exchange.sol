@@ -6,8 +6,6 @@ contract Exchange {
     address tokenAddress;
     address artistAddress;
 
-    address deployer;
-
     uint nativeTokenBalance;
     uint tokenBalance;
     uint deployedTime;
@@ -16,7 +14,6 @@ contract Exchange {
     uint claimAmount = 10;
 
     constructor (address _tokenAddress, address _artistAddress) {
-        deployer = msg.sender;
         tokenAddress = _tokenAddress;
         artistAddress = _artistAddress;
         deployedTime = block.timestamp;

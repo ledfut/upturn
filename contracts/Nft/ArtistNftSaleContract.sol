@@ -27,32 +27,31 @@ contract ArtistNftSaleContract {
         deployer = msg.sender;
     }
 
-    function CreateSale(uint _pricePerNft, uint _percentageArtistKeeps, string memory _nftName, string memory _nftSymbol, string memory _newBaseUri, uint _maxSupply) public {
+    function CreateSale(uint _pricePerNft, string memory _nftName, string memory _nftSymbol, uint _maxSupply) public {
         require (canAddressCreateNfts[msg.sender] == true, "Only approved addresses can create nfts");
         
         lastSaleId[msg.sender]++;
         ArtistNft artistNFT = new ArtistNft(_nftName, _nftSymbol, _maxSupply);
-        sales[msg.sender][lastSaleId[msg.sender]].isInSale = false;
         sales[msg.sender][lastSaleId[msg.sender]].nftPrice = _pricePerNft;
         sales[msg.sender][lastSaleId[msg.sender]].nftAddress = address(artistNFT);
 
         canAddressCreateNfts[msg.sender] = false;
 
         emit CreateSaleEvent(msg.sender, lastSaleId[msg.sender]);
+
+        address(this).delegatecall(abi.encodeWithSignature("StartSale(uint256)",lastSaleId[msg.sender]));
     }
 
-    function StartSale(address _artistAddress, uint _saleId) public {
-        require(msg.sender == deployer, "Only deployer can call this function");
-        sales[_artistAddress][_saleId].isInSale = true;
+    function StartSale(uint _saleId) public {
+        sales[msg.sender][_saleId].isInSale = true;
 
-        emit StartSaleEvent(_artistAddress, _saleId);
+        emit StartSaleEvent(msg.sender, _saleId);
     }
 
-    function StopSale(address _artistAddress, uint _saleId) public {
-        require(msg.sender == deployer, "Only deployer can call this function");
-        sales[_artistAddress][_saleId].isInSale = false;
+    function StopSale(uint _saleId) public {
+        sales[msg.sender][_saleId].isInSale = false;
 
-        emit StopSaleEvent(_artistAddress, _saleId);
+        emit StopSaleEvent(msg.sender, _saleId);
     }
 
     function MintNft(address _artistAddress, uint _saleId) public payable {
@@ -73,5 +72,12 @@ contract ArtistNftSaleContract {
     function SetAddressToCreateNFT(address _artistAddress, bool _result) public {
         require(msg.sender == deployer, "Only the deployer of this contract can access this function");
         canAddressCreateNfts[_artistAddress] = _result;
+    }
+    
+    function getCanNftCreateSale(address _address) public view returns(bool) {
+        return canAddressCreateNfts[_address];
+    }
+    function getSaleInfo(address _artistAddress, uint _saleId) public view returns(Sale memory) {
+        return sales[_artistAddress][_saleId];
     }
 }
