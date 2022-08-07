@@ -13,7 +13,7 @@ async function main() {
     const MarketplaceDeploy = await MarketplaceContract.deploy();
     await MarketplaceDeploy.deployed();
 
-    const ArtistNftSaleContract = await hre.ethers.getContractFactory("InitalRightsSale");
+    const ArtistNftSaleContract =     await hre.ethers.getContractFactory("InitalRightsSale");
     const ArtistNftSaleDeploy = await ArtistNftSaleContract.deploy();
     await ArtistNftSaleDeploy.deployed();
 

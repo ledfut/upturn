@@ -7,14 +7,16 @@ contract ArtistNft is LSP8IdentifiableDigitalAsset {
     address deployer;
     uint maxSupply;
 
-    constructor(string memory _name, string memory _symbol, uint _maxSupply) LSP8IdentifiableDigitalAsset(_name, _symbol, msg.sender) {
+    constructor(string memory _name, string memory _symbol, uint _maxSupply, bytes32 _dataKey, bytes memory _value) LSP8IdentifiableDigitalAsset(_name, _symbol, msg.sender) {
         allowedToMint = true;
         deployer = msg.sender;
         maxSupply = _maxSupply;
+        setData(_dataKey, _value);
     }
 
     function mint(address _to) public {
         require(allowedToMint == true, "Nft is not allowed to be minted");
+
         _mint(_to, bytes32(totalSupply()), true, "0x");
         
         if (totalSupply() >= maxSupply) {

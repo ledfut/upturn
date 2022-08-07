@@ -27,11 +27,11 @@ contract ArtistNftSaleContract {
         deployer = msg.sender;
     }
 
-    function CreateSale(uint _pricePerNft, string memory _nftName, string memory _nftSymbol, uint _maxSupply) public {
+    function CreateSale(uint _pricePerNft, string memory _nftName, string memory _nftSymbol, uint _maxSupply, bytes32 _dataKey, bytes memory _value) public {
         require (canAddressCreateNfts[msg.sender] == true, "Only approved addresses can create nfts");
         
         lastSaleId[msg.sender]++;
-        ArtistNft artistNFT = new ArtistNft(_nftName, _nftSymbol, _maxSupply);
+        ArtistNft artistNFT = new ArtistNft(_nftName, _nftSymbol, _maxSupply, _dataKey, _value);
         sales[msg.sender][lastSaleId[msg.sender]].nftPrice = _pricePerNft;
         sales[msg.sender][lastSaleId[msg.sender]].nftAddress = address(artistNFT);
 
