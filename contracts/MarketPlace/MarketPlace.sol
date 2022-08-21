@@ -1,8 +1,9 @@
 pragma solidity 0.8.15;
 
-import "@lukso/lsp-smart-contracts/contracts/LSP8IdentifiableDigitalAsset/LSP8IdentifiableDigitalAsset.sol";
+import "../Nft/ArtistNft.sol";
 
 contract Marketplace {
+    //  nft address => IDs listed
     mapping(address => bytes32[]) listedIdsInCollection;
     mapping(address => mapping(bytes32 => address)) nftOwner;
     mapping(address => mapping(bytes32 => uint)) listingPrice;
@@ -13,9 +14,10 @@ contract Marketplace {
     event deleteListingEvent(address indexed nftOwner, address indexed nftAddress, bytes32 indexed nftID);
 
     function listNft(address _nftAddress, bytes32 _nftID, uint _listingPrice) public {
-        //user must approve this contract with nft collection before calling this function
+        //address must approve this contract with nft collection before calling this function
         LSP8IdentifiableDigitalAsset NFT = LSP8IdentifiableDigitalAsset(_nftAddress);
         
+        //SET FALSE
         NFT.transfer(msg.sender, address(this), _nftID, true, "0x");
         nftOwner[_nftAddress][_nftID] = msg.sender;
         listingPrice[_nftAddress][_nftID] = _listingPrice;
@@ -25,7 +27,7 @@ contract Marketplace {
     }
 
     function buyNft(address _nftAddress, bytes32 _nftID) public payable {
-        LSP8IdentifiableDigitalAsset NFT = LSP8IdentifiableDigitalAsset(_nftAddress);
+        ArtistNft NFT = ArtistNft(_nftAddress);
         
         require(NFT.tokenOwnerOf(_nftID) == address(this), "This NFT is not listed on the marketplace");
         require(msg.value == listingPrice[_nftAddress][_nftID],"You have not sent the exact amount to buy this NFT");
@@ -39,8 +41,13 @@ contract Marketplace {
         }
         delete nftOwner[_nftAddress][_nftID];
         delete listingPrice[_nftAddress][_nftID];
-        //set false
+        //SET FALSE
         NFT.transfer(address(this), msg.sender, _nftID, true, "0x");
+        
+        uint percentage = NFT.getRoyaltyPercentage() * 100;
+        uint fee = msg.value * percentage / 10000;
+
+        payable (NFT.getArtist()).transfer(fee);
     
         emit buyNftEvent(msg.sender, _nftAddress, _nftID);
     }
@@ -56,7 +63,7 @@ contract Marketplace {
         require (nftOwner[_nftAddress][_nftID] == msg.sender, "Only the owner of this NFT can remove its lisiting");
         
         LSP8IdentifiableDigitalAsset NFT = LSP8IdentifiableDigitalAsset(_nftAddress);
-        //set false
+        //SET FALSE
         NFT.transfer(address(this), msg.sender, _nftID, true, "0x");
 
         //remove nft as listed on marketplace

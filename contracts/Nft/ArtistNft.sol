@@ -5,12 +5,16 @@ import "@lukso/lsp-smart-contracts/contracts/LSP8IdentifiableDigitalAsset/LSP8Id
 contract ArtistNft is LSP8IdentifiableDigitalAsset {
     bool allowedToMint;
     address deployer;
+    address artist;
     uint maxSupply;
+    uint royaltyPercentage;
 
-    constructor(string memory _name, string memory _symbol, uint _maxSupply, bytes32 _dataKey, bytes memory _value) LSP8IdentifiableDigitalAsset(_name, _symbol, msg.sender) {
+    constructor(string memory _name, string memory _symbol, uint _maxSupply, uint _royaltyPercentage, address _artist, bytes32 _dataKey, bytes memory _value) LSP8IdentifiableDigitalAsset(_name, _symbol, msg.sender) {
         allowedToMint = true;
         deployer = msg.sender;
         maxSupply = _maxSupply;
+        royaltyPercentage = _royaltyPercentage;
+        artist = _artist;
         setData(_dataKey, _value);
     }
 
@@ -22,5 +26,13 @@ contract ArtistNft is LSP8IdentifiableDigitalAsset {
         if (totalSupply() >= maxSupply) {
             allowedToMint = false;
         }
+    }
+
+    function getRoyaltyPercentage() public view returns(uint) {
+        return royaltyPercentage;
+    }
+
+    function getArtist() public view returns(address) {
+        return artist;
     }
 }

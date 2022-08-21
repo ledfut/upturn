@@ -10,6 +10,19 @@ module.exports = {
     gasPrice: 21
   },
   solidity: "0.8.15",
+  settings: {
+    optimizer: {
+      enabled: true,
+      runs: 2000,
+      details: {
+        yul: true,
+        yulDetails: {
+          stackAllocation: true,
+          optimizerSteps: "dhfoDgvulfnTUtnIf"
+        }
+      }
+    }
+  },
   //  settings: {
   //    optimizer: {
   //      enabled: true,

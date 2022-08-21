@@ -8,18 +8,13 @@ contract ArtistRightsToken is LSP7DigitalAsset {
     address saleContract;
     
     constructor(string memory _tokenName, string memory _tokenSymbol, uint _supply, address _initalRightsSaleAddress) LSP7DigitalAsset(_tokenName, _tokenSymbol, _initalRightsSaleAddress, false) {
-        //SET TO FALSE
         saleContract = _initalRightsSaleAddress;
         maxSupply = _supply;
     }
 
     function mint() public {
         require(msg.sender == saleContract, "Only the sales contract can call this function");
+        //SET FALSE
         _mint(msg.sender, maxSupply, true, "0x");
     }
-
-    function burn(address _from, uint _amount) public {
-        _burn(_from, _amount, "0x");
-    }
-
 }

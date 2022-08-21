@@ -24,6 +24,8 @@
     "web3": "^1.7.5"
   },
   "dependencies": {
+    "@erc725/erc725.js": "^0.14.4",
+    "@lukso/lsp-factory.js": "^2.3.3",
     "@lukso/lsp-smart-contracts": "^0.6.2",
     "@nomicfoundation/hardhat-toolbox": "^1.0.2",
     "@openzeppelin/contracts": "^4.7.0",
