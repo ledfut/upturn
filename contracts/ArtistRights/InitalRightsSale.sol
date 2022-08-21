@@ -150,7 +150,6 @@ contract InitialRightsSale {
         Exchange exchange = Exchange(artistTokenSales[msg.sender].ExchangeAddress);
         
         exchange.unlockLockedLiquidity(_depositId);
-        
         exchange.withdrawLiquidity(exchange.getDepositInfo(address(this), _depositId).tokenAmount,
                                    exchange.getDepositInfo(address(this), _depositId).nativeTokenAmount);
 

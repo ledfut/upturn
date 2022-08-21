@@ -1,6 +1,8 @@
 pragma solidity 0.8.15;
 
 import "./ArtistNft.sol";
+import "../LiquidityPools/Exchange.sol";
+import "../ArtistRights/ArtistRightsToken.sol";
 
 contract ArtistNftSaleContract {
     mapping (address => bool) canAddressCreateNfts;
@@ -8,6 +10,7 @@ contract ArtistNftSaleContract {
     mapping (address => mapping(uint => Sale)) sales;
     mapping (address => uint) lastSaleId;
     mapping (address => uint) artistBalance;
+    mapping (address => uint) exchangeBalance;
     uint contractBalance;
 
     event CreateSaleEvent(address indexed artistAddress, uint indexed saleId);
@@ -19,6 +22,9 @@ contract ArtistNftSaleContract {
         address nftAddress;
         uint nftPrice;
         bool isInSale;
+
+        address tokenAddress;
+        address tokenExchangeAddress;
     }
 
     address deployer;
@@ -63,10 +69,34 @@ contract ArtistNftSaleContract {
         
         //mint nft
         artistBalance[_artistAddress] += msg.value/2;
-        contractBalance += msg.value/2;
+        exchangeBalance[_artistAddress] += msg.value/2;
         artistNFT.mint(msg.sender);
 
         emit MintNftEvent(_artistAddress, _saleId, msg.sender);
+    }
+
+    function AddLiquidityToTokenExchange(address _artistAddress, uint _saleId) public {
+        require(msg.sender == deployer, "Only the deployer of this contract can access this function");
+        Exchange exchange = Exchange(getSaleInfo(_artistAddress, _saleId).tokenExchangeAddress);
+
+        uint tokenBal = exchange.nativeToTokenSwap{value: exchangeBalance[_artistAddress]/2}();
+        
+        ArtistRightsToken artistToken = AritstRightsToken(getSaleInfo(_artistAddress, _saleId).tokenAddress)
+        
+        artistToken.authorizeOperator(exchange.address, artistToken.balanceOf(address(this)));
+        exchange.addLockedliquidity{value: exchangeBalance[_artistAddress]}(tokenBal, 63120000); //24 months
+    }
+
+    function UnlockLiquidity(uint _saleId, uint _depositId) public {
+        Exchange exchange = Exchange(getSaleInfo(msg.sender, _saleId).tokenExchangeAddress);
+
+        exchange.unlockLockedLiquidity(_depositId);
+        exchange.withdrawLiquidity(exchange.getDepositInfo(address(this), _depositId).tokenAmount,
+                                   exchange.getDepositInfo(address(this), _depositId).nativeTokenAmount);
+
+        ArtistRightsToken artistToken = AritstRightsToken(getSaleInfo(msg.sender, _saleId).tokenAddress)
+        artistToken.transfer(address(this), msg.sender, exchange.getDepositInfo(address(this), _depositId).tokenAmount, true, "0x");
+        payable (msg.sender).transfer(exchange.getDepositInfo(address(this), _depositId).nativeTokenAmount);
     }
 
     function SetAddressToCreateNFT(address _artistAddress, bool _result) public {
