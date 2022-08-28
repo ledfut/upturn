@@ -2,7 +2,7 @@ pragma solidity 0.8.15;
 
 import "./ArtistNft.sol";
 import "../LiquidityPools/Exchange.sol";
-import "../ArtistRights/ArtistRightsToken.sol";
+import "../ArtistToken/ArtistToken.sol";
 
 contract ArtistNftSaleContract {
     mapping (address => bool) canAddressCreateNfts;
@@ -24,7 +24,7 @@ contract ArtistNftSaleContract {
         bool isInSale;
 
         address tokenAddress;
-        address tokenExchangeAddress;
+        address payable tokenExchangeAddress;
     }
 
     address deployer;
@@ -77,24 +77,25 @@ contract ArtistNftSaleContract {
 
     function AddLiquidityToTokenExchange(address _artistAddress, uint _saleId) public {
         require(msg.sender == deployer, "Only the deployer of this contract can access this function");
-        Exchange exchange = Exchange(getSaleInfo(_artistAddress, _saleId).tokenExchangeAddress);
+        Exchange exchange = Exchange(sales[_artistAddress][_saleId].tokenExchangeAddress);
 
         uint tokenBal = exchange.nativeToTokenSwap{value: exchangeBalance[_artistAddress]/2}();
         
-        ArtistRightsToken artistToken = AritstRightsToken(getSaleInfo(_artistAddress, _saleId).tokenAddress)
-        
-        artistToken.authorizeOperator(exchange.address, artistToken.balanceOf(address(this)));
-        exchange.addLockedliquidity{value: exchangeBalance[_artistAddress]}(tokenBal, 63120000); //24 months
+        //ArtistToken artistToken = ArtistToken(getSaleInfo(_artistAddress, _saleId).tokenAddress);
+        ArtistToken artistToken = ArtistToken(sales[_artistAddress][_saleId].tokenAddress);
+  
+        artistToken.authorizeOperator(address(exchange), artistToken.balanceOf(address(this)));
+        exchange.addLockedLiquidity{value: exchangeBalance[_artistAddress]}(tokenBal, 63120000); //24 months
     }
 
     function UnlockLiquidity(uint _saleId, uint _depositId) public {
-        Exchange exchange = Exchange(getSaleInfo(msg.sender, _saleId).tokenExchangeAddress);
+        Exchange exchange = Exchange(sales[msg.sender][_saleId].tokenExchangeAddress);
 
         exchange.unlockLockedLiquidity(_depositId);
         exchange.withdrawLiquidity(exchange.getDepositInfo(address(this), _depositId).tokenAmount,
                                    exchange.getDepositInfo(address(this), _depositId).nativeTokenAmount);
 
-        ArtistRightsToken artistToken = AritstRightsToken(getSaleInfo(msg.sender, _saleId).tokenAddress)
+        ArtistToken artistToken = ArtistToken(getSaleInfo(msg.sender, _saleId).tokenAddress);
         artistToken.transfer(address(this), msg.sender, exchange.getDepositInfo(address(this), _depositId).tokenAmount, true, "0x");
         payable (msg.sender).transfer(exchange.getDepositInfo(address(this), _depositId).nativeTokenAmount);
     }

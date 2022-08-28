@@ -1,7 +1,6 @@
 pragma solidity 0.8.15;
 
-import "../Nft/ArtistNft.sol";
-
+import "../Nft/ArtistNft.sol";  
 contract Marketplace {
     //  nft address => IDs listed
     mapping(address => bytes32[]) listedIdsInCollection;

@@ -1,7 +1,7 @@
 pragma solidity 0.8.15;
 import "../LiquidityPools/Exchange.sol";
-import "./ArtistRightsToken.sol";
-contract InitialRightsSale {
+import "./ArtistToken.sol";
+contract ArtistTokenSale {
     mapping (address => Sale) artistTokenSales;
 
     struct Sale {
@@ -52,7 +52,7 @@ contract InitialRightsSale {
         require(_percentageForLiquidity <= 100, "Percentage for liquidity cannot be higher than 100");
         require(_percentageForArtist <= 100, "Percentage for Artist cannot be higher than 100");
 
-        ArtistRightsToken artistToken = ArtistRightsToken(_artistTokenAddress);
+        ArtistToken artistToken = ArtistToken(_artistTokenAddress);
          
         setupSale1(_artistAddress, _artistTokenAddress, _exchangeAddress, _pricePerToken, _percentageForLiquidity);
         setupSale2(_artistAddress, _artistTokenAddress, _pricePerToken, _percentageOfCommitedFunds, _intervalLength, _intervalTotalLength);
@@ -72,7 +72,7 @@ contract InitialRightsSale {
     }
 
     function setupSale1(address _artistAddress, address _artistTokenAddress, address payable _exchangeAddress, uint _pricePerToken, uint _percentageForLiquidity) internal {
-        ArtistRightsToken artistToken = ArtistRightsToken(_artistTokenAddress);
+        ArtistToken artistToken = ArtistToken(_artistTokenAddress);
         artistToken.mint();
 
         artistTokenSales[_artistAddress].ArtistTokenAddress = _artistTokenAddress;
@@ -85,7 +85,7 @@ contract InitialRightsSale {
     function setupSale2(address _artistAddress, address _artistTokenAddress, uint _pricePerToken, uint _percentageOfCommitedFunds, uint _intervalLength, uint _intervalTotalLength) internal {
         //calculate and apply percentage of funds that will be commited
 
-        ArtistRightsToken artistToken = ArtistRightsToken(_artistTokenAddress);
+        ArtistToken artistToken = ArtistToken(_artistTokenAddress);
         uint TotalFundsFromSale = artistToken.totalSupply() * _pricePerToken;
         uint TotalFundsMultiplied = TotalFundsFromSale * 100;
         artistTokenSales[_artistAddress].InitialCommitedNativeTokens = _percentageOfCommitedFunds * TotalFundsMultiplied / 10000;
@@ -119,7 +119,7 @@ contract InitialRightsSale {
         require(artistTokenSales[_artistAddress].TokensForSale > 0, "No artist tokens for sale right now");
 
         //has account sent enough native tokens
-        ArtistRightsToken artistToken = ArtistRightsToken (artistTokenSales[_artistAddress].ArtistTokenAddress);
+        ArtistToken artistToken = ArtistToken (artistTokenSales[_artistAddress].ArtistTokenAddress);
 
         uint buyAmount = msg.value / artistTokenSales[_artistAddress].PricePerToken;
         require (buyAmount <= artistToken.balanceOf(address(this)), "Not enough tokens left to buy");
@@ -153,7 +153,7 @@ contract InitialRightsSale {
         exchange.withdrawLiquidity(exchange.getDepositInfo(address(this), _depositId).tokenAmount,
                                    exchange.getDepositInfo(address(this), _depositId).nativeTokenAmount);
 
-        ArtistRightsToken artistToken = ArtistRightsToken(artistTokenSales[msg.sender].ArtistTokenAddress);
+        ArtistToken artistToken = ArtistToken(artistTokenSales[msg.sender].ArtistTokenAddress);
 
         artistToken.transfer(address(this), msg.sender, exchange.getDepositInfo(address(this), _depositId).tokenAmount, true, "0x");
         payable (msg.sender).transfer(exchange.getDepositInfo(address(this), _depositId).nativeTokenAmount);
@@ -167,7 +167,7 @@ contract InitialRightsSale {
         
         require(result > 0,"not enough time has passed for artist to claim");
         require(intervalsFromLastClaim < artistTokenSales[msg.sender].IntervalTotalLength, "no more claims avaliable for artist");
-            ArtistRightsToken artistToken = ArtistRightsToken(artistTokenSales[msg.sender].ArtistTokenAddress);
+            ArtistToken artistToken = ArtistToken(artistTokenSales[msg.sender].ArtistTokenAddress);
             uint sendToArtist = artistTokenSales[msg.sender].LockedPerInterval * result;
 
             artistTokenSales[msg.sender].ArtistLastClaimTime += result * artistTokenSales[msg.sender].IntervalLength;
@@ -184,7 +184,7 @@ contract InitialRightsSale {
         
         require (intervalsPassed < artistTokenSales[_artistAddress].IntervalTotalLength, "Reversible ICO has finished with this token");
 
-        ArtistRightsToken artistToken = ArtistRightsToken(artistTokenSales[_artistAddress].ArtistTokenAddress);
+        ArtistToken artistToken = ArtistToken(artistTokenSales[_artistAddress].ArtistTokenAddress);
 
         uint priceRemovePerToken = intervalsPassed * artistTokenSales[_artistAddress].ReturnPriceReducePerInterval;
         uint pricePerToken = artistTokenSales[_artistAddress].InitialReturnPricePerCoin - priceRemovePerToken;

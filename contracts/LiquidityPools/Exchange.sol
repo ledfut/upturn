@@ -1,6 +1,6 @@
 pragma solidity 0.8.15;
 
-import "../ArtistRights/ArtistRightsToken.sol";
+import "../ArtistToken/ArtistToken.sol";
 
 contract Exchange {
     address tokenAddress;
@@ -20,7 +20,7 @@ contract Exchange {
     mapping(address => mapping(uint => LockedLiquidityDeposit)) lockedLiquidityDeposits;
     mapping(address => uint) lockedLiquidityLastDepositId;
 
-    ArtistRightsToken artistToken;
+    ArtistToken artistToken;
 
     struct LockedLiquidityDeposit {
         bool active;
@@ -31,7 +31,7 @@ contract Exchange {
 
     constructor (address _tokenAddress, address _artistAddress) {
         tokenAddress = _tokenAddress;
-        artistToken = ArtistRightsToken(_tokenAddress);
+        artistToken = ArtistToken(_tokenAddress);
         artistAddress = _artistAddress;
         deployedTime = block.timestamp;
     }

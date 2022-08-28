@@ -1,6 +1,6 @@
 pragma solidity 0.8.15;
 
-import "./ArtistRightsToken.sol";
+import "./ArtistToken.sol";
 
 contract StakeArtistToken {
     // token address => user address    => time
@@ -19,7 +19,7 @@ contract StakeArtistToken {
         //address must approve this contract before calling this function on the token
         require (stakedAmount[_tokenAddress][msg.sender] == 0, "Address has tokens currently staked");
     
-        ArtistRightsToken artistToken = ArtistRightsToken(_tokenAddress);
+        ArtistToken artistToken = ArtistToken(_tokenAddress);
         //SET FALSE
         artistToken.transfer(msg.sender, address(this), _stakeAmount, true, "0x");
 
@@ -33,7 +33,7 @@ contract StakeArtistToken {
         uint withdraw = stakedAmount[_tokenAddress][msg.sender];
         stakedAmount[_tokenAddress][msg.sender] = 0;
 
-        ArtistRightsToken artistToken = ArtistRightsToken(_tokenAddress);
+        ArtistToken artistToken = ArtistToken(_tokenAddress);
         //SET FALSE
         artistToken.transfer(address(this), msg.sender, withdraw, true, "0x");
         address(this).delegatecall(abi.encodeWithSignature("claimStake(address)", _tokenAddress)
@@ -45,7 +45,7 @@ contract StakeArtistToken {
     function claimStake(address _tokenAddress) public{
         require (stakedAmount[_tokenAddress][msg.sender] != 0, "Address hasn't got any tokens staked");
         if (block.timestamp - addressStakeStartTime[_tokenAddress][msg.sender] >= stakingInterval[_tokenAddress]) {
-            ArtistRightsToken artistToken = ArtistRightsToken(_tokenAddress);
+            ArtistToken artistToken = ArtistToken(_tokenAddress);
 
             uint difference = block.timestamp - addressStakeStartTime[_tokenAddress][msg.sender];
             uint intervalsPassed = difference/stakingInterval[_tokenAddress];

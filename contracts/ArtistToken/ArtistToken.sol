@@ -3,7 +3,7 @@ pragma solidity 0.8.15;
 import "@lukso/lsp-smart-contracts/contracts/LSP7DigitalAsset/LSP7DigitalAsset.sol";
 import "./StakeArtistToken.sol";
 
-contract ArtistRightsToken is LSP7DigitalAsset {
+contract ArtistToken is LSP7DigitalAsset {
     uint maxSupply;
     address saleContract;
     
