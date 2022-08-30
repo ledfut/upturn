@@ -1,8 +1,8 @@
 const { expect } = require("chai");
 const { ethers, network } = require("hardhat");
 const { balance, expectRevert} = require("@openzeppelin/test-helpers");
-// NEED TO UPDATE FOR PROFILES INSTEAD OF ADDRESSES
-describe("Marketplace functionality", async() => {
+
+describe.only("Marketplace functionality", async() => {
     let Marketplace;
     let ArtistNft;
 

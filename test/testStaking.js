@@ -13,11 +13,11 @@ describe("Staking functionality", async() => {
     beforeEach(async() => {
         [acc1, acc2, acc3] = await ethers.getSigners();
 
-        const ArtistTokenSaleContract = await ethers.getContractFactory("InitalRightsSale");
+        const ArtistTokenSaleContract = await ethers.getContractFactory("ArtistTokenSale");
         const ArtistTokenSaleDeploy = await ArtistTokenSaleContract.deploy();
         ArtistTokenSale = await ArtistTokenSaleDeploy.deployed();
 
-        const ArtistTokenContract = await ethers.getContractFactory("ArtistRightsToken");
+        const ArtistTokenContract = await ethers.getContractFactory("ArtisToken");
         const ArtistTokenDeploy = await ArtistTokenContract.deploy("name", "ticker", 1000, ArtistTokenSale.address);
         ArtistToken = await ArtistTokenDeploy.deployed();
 

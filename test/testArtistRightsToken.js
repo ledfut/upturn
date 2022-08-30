@@ -1,7 +1,7 @@
 const { expect } = require("chai");
 const { ethers, network } = require("hardhat");
 const { balance, expectRevert} = require("@openzeppelin/test-helpers");
-// NEED TO UPDATE FOR PROFILES INSTEAD OF ADDRESSES
+
 describe("Artist rights token functionality", async() => {
     let ArtistToken;
     let ArtistTokenSale;
@@ -11,11 +11,11 @@ describe("Artist rights token functionality", async() => {
     beforeEach(async() => {
         [acc1, acc2, acc3] = await ethers.getSigners();
 
-        const ArtistTokenSaleContract = await ethers.getContractFactory("InitalRightsSale");
+        const ArtistTokenSaleContract = await ethers.getContractFactory("ArtistTokenSale");
         const ArtistTokenSaleDeploy = await ArtistTokenSaleContract.deploy();
         ArtistTokenSale = await ArtistTokenSaleDeploy.deployed();
         
-        const ArtistTokenContract = await ethers.getContractFactory("ArtistRightsToken");
+        const ArtistTokenContract = await ethers.getContractFactory("ArtistToken");
         const ArtistTokenDeploy = await ArtistTokenContract.deploy("name", "ticker", 1000, ArtistTokenSale.address);
         ArtistToken = await ArtistTokenDeploy.deployed();
 
@@ -27,7 +27,7 @@ describe("Artist rights token functionality", async() => {
     it("should allow the sales contract to mint tokens", async() => {
         let BalOfSalesBefore = await ArtistToken.balanceOf(ArtistTokenSale.address);
         
-        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25);
+        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25, 50, 2630000, 12); // 1 month for 12 months
         let BalOfSalesAfter = await ArtistToken.balanceOf(ArtistTokenSale.address);
 
         expect(BalOfSalesAfter).to.be.greaterThan(BalOfSalesBefore);
@@ -45,7 +45,7 @@ describe("Artist rights token functionality", async() => {
     })
 
     it("should allow an address to transfer funds to another address", async() => {
-        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25);
+        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25, 50, 2630000, 12); // 1 month for 12 months
         
         let balOfAcc1Before = await ArtistToken.balanceOf(acc1.address);
         let balOfAcc2Before = await ArtistToken.balanceOf(acc2.address);
@@ -59,42 +59,11 @@ describe("Artist rights token functionality", async() => {
     })
 
     it("SHOULD NOT allow an address to transfer funds that they haven't been approved to transfer", async() => {
-        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25);
+        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25, 50, 2630000, 12); // 1 month for 12 months
 
         await expectRevert(
             ArtistToken.connect(acc2).transfer(acc1.address, acc2.address, 10, true, "0x"),
             "LSP7AmountExceedsAuthorizedAmount"
         )
     })
-
-    it("should allow an address to burn tokens they own", async() => {
-        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25);
-        
-        let balBefore = await ArtistToken.balanceOf(acc1.address);
-        await ArtistToken.connect(acc1).burn(acc1.address, 10);
-        let balAfter = await ArtistToken.balanceOf(acc1.address);
-        
-        expect(balAfter).to.be.lessThan(balBefore);
-    })
-
-    it("SHOULD NOT allow an address to burn tokens that they do not own or are authorized to burn", async() => {
-        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25);
-
-        await expectRevert(
-            ArtistToken.connect(acc2).burn(acc1.address, 10),
-            "LSP7AmountExceedsAuthorizedAmount"
-        )
-    })
-
-    it("should allow an address to burn tokens that where authoized to", async() => {
-        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25);
-        await ArtistToken.connect(acc1).authorizeOperator(acc2.address, 10);
-        
-        let balBefore = await ArtistToken.balanceOf(acc1.address);
-        await ArtistToken.burn(acc1.address, 10);
-        let balAfter = await ArtistToken.balanceOf(acc1.address);
-
-        expect(balAfter).to.be.lessThan(balBefore);
-    })
-
 })

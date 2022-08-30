@@ -42,8 +42,7 @@ contract Exchange {
         //this contract must be approved to spend tokens before calling this function
        lockedNativeTokenBalance += msg.value;
        lockedTokenBalance += _tokenAmount;
-       //SET FALSE
-       artistToken.transfer(msg.sender, address(this), _tokenAmount, true, "0x");
+       artistToken.transfer(msg.sender, address(this), _tokenAmount, false, "0x");
 
        lockedLiquidityDeposits[msg.sender][lockedLiquidityLastDepositId[msg.sender]].active = true;
        lockedLiquidityDeposits[msg.sender][lockedLiquidityLastDepositId[msg.sender]].tokenAmount = _tokenAmount;
@@ -72,8 +71,7 @@ contract Exchange {
         //this contract must be approved to spend tokens before calling this function
        nativeTokenBalance += msg.value;
        tokenBalance += _tokenAmount;
-       //SET FALSE
-       artistToken.transfer(msg.sender, address(this), _tokenAmount, true, "0x");
+       artistToken.transfer(msg.sender, address(this), _tokenAmount, false, "0x");
 
        artistTokenDeposited[msg.sender] += _tokenAmount;
        nativeTokenDeposited[msg.sender] += msg.value;
@@ -89,7 +87,7 @@ contract Exchange {
         artistTokenDeposited[msg.sender] -= _artistTokenAmount;
         nativeTokenDeposited[msg.sender] -= _nativeTokenAmount;
 
-        artistToken.transfer(address(this), msg.sender, _artistTokenAmount, true, "0x");
+        artistToken.transfer(address(this), msg.sender, _artistTokenAmount, false, "0x");
         payable (msg.sender).transfer(_nativeTokenAmount);
     }
 
@@ -100,16 +98,14 @@ contract Exchange {
         uint tokensOut = tokenBalance - tokenBalDifference;
         tokenBalance -= tokensOut;
         
-        //SET FALSE
-        artistToken.transfer(address(this), msg.sender, tokensOut, true, "0x");
+        artistToken.transfer(address(this), msg.sender, tokensOut, false, "0x");
         return (tokensOut);
     }
 
     function tokenToNativeSwap(uint _tokenAmount) public returns (uint){
         //user must approve this contract and token amount before calling this function
 
-        //SET FALSE
-        artistToken.transfer(msg.sender, address(this), _tokenAmount, true, "0x");
+        artistToken.transfer(msg.sender, address(this), _tokenAmount, false, "0x");
 
         uint invariant = nativeTokenBalance * tokenBalance;
         tokenBalance += _tokenAmount;

@@ -2,8 +2,8 @@ const { expect } = require("chai");
 const { ethers, waffle, network, hre } = require("hardhat");
 const { balance, expectRevert} = require("@openzeppelin/test-helpers");
 const { LSPFactory } = require("@lukso/lsp-factory.js")
-// NEED TO UPDATE FOR PROFILES INSTEAD OF ADDRESSES
-describe.only("Artist rights token sale functionality", async() => {
+
+describe("Artist rights token sale functionality", async() => {
     let ArtistToken;
     let ArtistTokenSale;
     let Exchange;
@@ -23,11 +23,11 @@ describe.only("Artist rights token sale functionality", async() => {
     beforeEach(async() => {
         [acc1, acc2, acc3] = await ethers.getSigners();
 
-        const ArtistTokenSaleContract = await ethers.getContractFactory("InitialRightsSale");
+        const ArtistTokenSaleContract = await ethers.getContractFactory("ArtistTokenSale");
         const ArtistTokenSaleDeploy = await ArtistTokenSaleContract.deploy();
         ArtistTokenSale = await ArtistTokenSaleDeploy.deployed();
         
-        const ArtistTokenContract = await ethers.getContractFactory("ArtistRightsToken");
+        const ArtistTokenContract = await ethers.getContractFactory("ArtistToken");
         const ArtistTokenDeploy = await ArtistTokenContract.deploy("name", "ticker", 1000, ArtistTokenSale.address);
         ArtistToken = await ArtistTokenDeploy.deployed();
 
@@ -98,7 +98,7 @@ describe.only("Artist rights token sale functionality", async() => {
             "Token price is greater than native token that has been sent")
     })
   
-    it.only("SHOULD NOT allow the user to attempt to buy tokens if all tokens where bought as well", async() => {
+    it("SHOULD NOT allow the user to attempt to buy tokens if all tokens where bought as well", async() => {
         //await ArtistToken.connect(acc1).authorizeOperator(acc1.address, ArtistTokenSale.address, ArtistToken.balanceOf(acc1.address));
         await ArtistTokenSale.connect(acc2).BuyArtistTokens(acc1.address, {value: 250000});
 

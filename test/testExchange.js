@@ -12,11 +12,11 @@ describe("testing the main contract", async() => {
     beforeEach(async() => {
         [acc1, acc2] = await ethers.getSigners();
 
-        const tokenSaleContract = await ethers.getContractFactory("InitalRightsSale");
+        const tokenSaleContract = await ethers.getContractFactory("ArtistTokenSale");
         const tokenSaleDeploy = await tokenSaleContract.deploy();
         tokenSale = await tokenSaleDeploy.deployed();
 
-        const tokenContract = await ethers.getContractFactory("ArtistRightsToken");
+        const tokenContract = await ethers.getContractFactory("ArtistToken");
         const token1Deploy = await tokenContract.deploy("name1", "ticker1", 1000, tokenSale.address);
         token1 = await token1Deploy.deployed();
 
@@ -32,7 +32,7 @@ describe("testing the main contract", async() => {
         expect(nativeBalOfExchangeBefore).to.equal(0);
         expect(tokenBalOfExchangeBefore).to.equal(0);
         
-        await tokenSale.connect(acc1).CreateSale(acc1.address, token1.address, exchange.address, 1, 50, 25)
+        await tokenSale.CreateSale(acc1.address, token1.address, exchange.address, 1, 50, 25, 50, 2630000, 12); // 1 month for 12 months
         await tokenSale.connect(acc2).BuyArtistTokens(acc1.address, {value: 250});
         
         let nativeBalOfExchangeAfter = await exchange.getNativeTokenBalance();
@@ -43,7 +43,7 @@ describe("testing the main contract", async() => {
     })
 
     it("should exchange native to token", async() => {
-        await tokenSale.connect(acc1).CreateSale(acc1.address, token1.address, exchange.address, 1, 50, 25)
+        await tokenSale.CreateSale(acc1.address, token1.address, exchange.address, 1, 50, 25, 50, 2630000, 12); // 1 month for 12 months
         await tokenSale.connect(acc2).BuyArtistTokens(acc1.address, {value: 250});
 
         let acc2TokenBalBefore = await token1.balanceOf(acc2.address);
@@ -54,7 +54,7 @@ describe("testing the main contract", async() => {
     })
 
     it("should exchange token to native", async() => {
-        await tokenSale.connect(acc1).CreateSale(acc1.address, token1.address, exchange.address, 1, 50, 25)
+        await tokenSale.CreateSale(acc1.address, token1.address, exchange.address, 1, 50, 25, 50, 2630000, 12); // 1 month for 12 months
         await tokenSale.connect(acc2).BuyArtistTokens(acc1.address, {value: 250});
 
         let exchangeBalBefore = await waffle.provider.getBalance(exchange.address);
