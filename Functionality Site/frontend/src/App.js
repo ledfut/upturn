@@ -16,7 +16,7 @@ export let connectedAddress;
 export let isWalletConnected;
 
 function App() {
-    const [walletAddress, setWalletAddress] = useState("");
+    const [walletAddress, setWalletAddress] = useState(""); 
 
     const [artistAddress, setArtistAddress] = useState("");
     const [artistTokenAddress, setArtistTokenAddress] = useState("")
