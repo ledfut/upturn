@@ -1,5 +1,5 @@
 
-# UP.TURN Digital Asset Backed Artist Tokens and Infrastructure
+# UP.TURN Digital Asset Backed Artist Tokens - Decentralised Infrastructure
 For the first time, artists will be able to sell tokens backed by their catalogue of digital assets. In this world of intangible value it is hard to truly know what gives an NFT or token its value, or whether there is any backing other than speculation. The UP.TURN concept creates a new pathway for artists to capitalise on their catalogue of digital assets. Artist income has always been  at the forefront of the music industry, especially on the independent side. With roughly 70% of revenue into the music industry being controlled by the major 4 labels, it has never been more important for an artist to be in direct contact with their fans and their income.
 
 With the emergence of NFTs and AR, VR,  Metaverse tech. The value attributed to digital assets like music, artwork, fashion and merchandise has never been higher and will continue to grow in the coming years.
@@ -76,5 +76,5 @@ LEDFUT @ledfut_nft - ledfut@tmps.io
 Merc @MercWeb3 - benhilder7@gmail.com
 
 License
-All rights reserved
+All Rights Reserved [pending DAO to own 100% of rights to infrastructure]
 Test Deployment on LUKSO L16 Testnet
