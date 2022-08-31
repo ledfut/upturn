@@ -50,6 +50,24 @@ Smart contracts more in depth - https://youtu.be/lAlQdmJqVMc
 ## Functionality Artist Token Sale Site
 https://divine-cell-5004.on.fleek.co/
 
+- With the lukso extension enabled [metamask disabled] click connect wallet
+- Then approve contract so you can use your LSP7 artist token [created with token generator]
+- From there you put in the artist address [your UP address] and the token into create token exchange[it creates an exchange]
+- Then you get the exchange address
+- With that you can create a sale
+- Input: 
+- The artist address [your UP address]
+- Artist Token address
+- Exchange Address [we just created]
+- Price per token
+- Token percentage artist keeps
+- Percentage kept for liquidity
+- How much LUKSO tokens [LYX] for rICO is commited
+- In seconds long you want each claim interval to be 
+- How many intervals in total
+
+- PUBLIC [users] can then buy with the BUY function
+
 ## Main Contributors
 LEDFUT @ledfut_nft - ledfut@tmps.io
 Merc @MercWeb3 - benhilder7@gmail.com
