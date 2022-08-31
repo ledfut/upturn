@@ -47,7 +47,7 @@ Full Presentation - https://www.youtube.com/watch?v=dnZW0ojFjzE
 
 Smart contracts more in depth - https://youtu.be/lAlQdmJqVMc
 
-## Functionality site
+## Functionality Artist Token Sale Site
 https://divine-cell-5004.on.fleek.co/
 
 ## Main Contributors
