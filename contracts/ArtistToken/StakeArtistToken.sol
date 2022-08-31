@@ -20,7 +20,7 @@ contract StakeArtistToken {
         require (stakedAmount[_tokenAddress][msg.sender] == 0, "Address has tokens currently staked");
     
         ArtistToken artistToken = ArtistToken(_tokenAddress);
-        artistToken.transfer(msg.sender, address(this), _stakeAmount, false, "0x");
+        artistToken.transfer(msg.sender, address(this), _stakeAmount, true, "0x");
 
         addressStakeStartTime[_tokenAddress][msg.sender] = block.timestamp;
         stakedAmount[_tokenAddress][msg.sender] = _stakeAmount;
@@ -33,7 +33,7 @@ contract StakeArtistToken {
         stakedAmount[_tokenAddress][msg.sender] = 0;
 
         ArtistToken artistToken = ArtistToken(_tokenAddress);
-        artistToken.transfer(address(this), msg.sender, withdraw, false, "0x");
+        artistToken.transfer(address(this), msg.sender, withdraw, true, "0x");
         address(this).delegatecall(abi.encodeWithSignature("claimStake(address)", _tokenAddress)
         );
 
@@ -54,7 +54,7 @@ contract StakeArtistToken {
             uint rewardBase = artistToken.balanceOf(address(this)) * percentageOwned / 10000;
             uint reward = rewardBase * intervalsPassed;
             
-            artistToken.transfer(address(this), msg.sender, reward, false, "0x");
+            artistToken.transfer(address(this), msg.sender, reward, true, "0x");
             addressStakeStartTime[_tokenAddress][msg.sender] = block.timestamp;
         }
     }

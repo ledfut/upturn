@@ -17,7 +17,7 @@ describe("Staking functionality", async() => {
         const ArtistTokenSaleDeploy = await ArtistTokenSaleContract.deploy();
         ArtistTokenSale = await ArtistTokenSaleDeploy.deployed();
 
-        const ArtistTokenContract = await ethers.getContractFactory("ArtisToken");
+        const ArtistTokenContract = await ethers.getContractFactory("ArtistToken");
         const ArtistTokenDeploy = await ArtistTokenContract.deploy("name", "ticker", 1000, ArtistTokenSale.address);
         ArtistToken = await ArtistTokenDeploy.deployed();
 
@@ -31,7 +31,7 @@ describe("Staking functionality", async() => {
     })
 
     it("should allow a user to stake a token they own", async() => {
-        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25);
+        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25, 25, 2630000, 12);
         await ArtistToken.connect(acc1).authorizeOperator(Staking.address, ArtistToken.balanceOf(acc1.address));
         
         let balOfStakingBefore = await ArtistToken.balanceOf(Staking.address);
@@ -42,7 +42,7 @@ describe("Staking functionality", async() => {
     })
 
     it("should allow a user to claim rewards from staking after a interval time has pass", async() => {
-        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25);
+        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25, 25, 2630000, 12);
 
         //send 100 tokens to staking contract to see if percentage sent is correct
         await ArtistTokenSale.connect(acc2).BuyArtistTokens(acc1.address, {value: 250});
@@ -59,18 +59,18 @@ describe("Staking functionality", async() => {
         await Staking.connect(acc1).claimStake(ArtistToken.address);
         let bal1 = await ArtistToken.balanceOf(acc1.address);
         
-        expect (bal1).to.be.equal(249);
+        expect (bal1).to.be.equal(499);
 
         await network.provider.send("evm_increaseTime", [1000])
         await network.provider.send("evm_mine");
 
         await Staking.connect(acc1).claimStake(ArtistToken.address);
         let bal2 = await ArtistToken.balanceOf(acc1.address);
-        expect(bal2).to.equal(267)
+        expect(bal2).to.equal(517)
     })
 
     it("should allow a user unstake before reward is avalible", async() => {
-        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25);
+        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25, 25, 2630000, 12);
         await ArtistToken.connect(acc1).authorizeOperator(Staking.address, ArtistToken.balanceOf(acc1.address));
         await Staking.connect(acc1).stake(ArtistToken.address, ArtistToken.balanceOf(acc1.address));
         
@@ -83,7 +83,7 @@ describe("Staking functionality", async() => {
     })
 
     it("should allow a user to unstake when a reward is avaliable and receive the reward", async() => {
-        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25);
+        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25, 25, 2630000, 12);
         await ArtistToken.connect(acc1).authorizeOperator(Staking.address, ArtistToken.balanceOf(acc1.address));
         await Staking.connect(acc1).stake(ArtistToken.address, ArtistToken.balanceOf(acc1.address));
         

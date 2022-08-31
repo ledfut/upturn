@@ -2,7 +2,7 @@ const { expect } = require("chai");
 const { ethers, network } = require("hardhat");
 const { balance, expectRevert} = require("@openzeppelin/test-helpers");
 
-describe.only("Marketplace functionality", async() => {
+describe("Marketplace functionality", async() => {
     let Marketplace;
     let ArtistNft;
 
@@ -16,7 +16,7 @@ describe.only("Marketplace functionality", async() => {
         Marketplace = await MarketplaceDeploy.deployed();
 
         const ArtistNftContract = await ethers.getContractFactory("ArtistNft");
-        const ArtistNftDeploy = await ArtistNftContract.deploy("artistNft", "ANFT", 1000);
+        const ArtistNftDeploy = await ArtistNftContract.deploy("artistNft", "ANFT", 1000, 1, acc1.address, "0x737472696e670000000000000000000000000000000000000000000000000000", "0x737472696e670000000000000000000000000000000000000000000000000000");
         ArtistNft = await ArtistNftDeploy.deployed();
        
         await ArtistNft.mint(acc1.address);

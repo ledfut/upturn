@@ -27,7 +27,7 @@ describe("Artist rights token functionality", async() => {
     it("should allow the sales contract to mint tokens", async() => {
         let BalOfSalesBefore = await ArtistToken.balanceOf(ArtistTokenSale.address);
         
-        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25, 50, 2630000, 12); // 1 month for 12 months
+        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25, 25, 2630000, 12);
         let BalOfSalesAfter = await ArtistToken.balanceOf(ArtistTokenSale.address);
 
         expect(BalOfSalesAfter).to.be.greaterThan(BalOfSalesBefore);
@@ -45,7 +45,7 @@ describe("Artist rights token functionality", async() => {
     })
 
     it("should allow an address to transfer funds to another address", async() => {
-        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25, 50, 2630000, 12); // 1 month for 12 months
+        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25, 25, 2630000, 12);
         
         let balOfAcc1Before = await ArtistToken.balanceOf(acc1.address);
         let balOfAcc2Before = await ArtistToken.balanceOf(acc2.address);
@@ -59,7 +59,7 @@ describe("Artist rights token functionality", async() => {
     })
 
     it("SHOULD NOT allow an address to transfer funds that they haven't been approved to transfer", async() => {
-        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25, 50, 2630000, 12); // 1 month for 12 months
+        await ArtistTokenSale.CreateSale(acc1.address, ArtistToken.address, Exchange.address, 1, 50, 25, 25, 2630000, 12);
 
         await expectRevert(
             ArtistToken.connect(acc2).transfer(acc1.address, acc2.address, 10, true, "0x"),

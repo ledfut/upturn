@@ -25,83 +25,53 @@ contract ArtistTokenSale {
         uint ArtistLastClaimTime;
         uint maxTime;
         uint amountClaimed;
-
-        uint TokenSupplyMultiplied;
     }
 
     mapping (address => address) createdExchangeAddresses;
 
-    address admin;
+    address contractDeployer;
 
     event CreateSaleEvent(address indexed artistAddress, address indexed artistTokenAddress, uint indexed pricePerToken);
     event StartSaleEvent(address indexed artistAddress);
     event StopSaleEvent(address indexed artistAddress);
     event BuyArtistTokensEvent(address indexed artistAddress, uint indexed buyAmount);
 
-    constructor(address _admin) {
-        admin = _admin;
+    constructor() {
+        contractDeployer = msg.sender;
     }
     
     function CreateExchange(address _tokenAddress, address _artistAddress) public {
         Exchange newExchange = new Exchange(_tokenAddress, _artistAddress);
         createdExchangeAddresses[msg.sender] = address(newExchange);
-        artistTokenSales[_artistAddress].ExchangeAddress = payable (address(newExchange));
     }
 
-
-    function CreateSale(address _artistAddress, address _artistTokenAddress, address payable _exchangeAddress, uint _pricePerToken, uint _percentageForArtist, uint _percentageForLiquidity, uint _percentageOfCommitedFunds,uint _intervalLength ,uint _intervalTotalLength) public {
+    function CreateSale(address _artistAddress, address _artistTokenAddress, address payable _exchangeAddress, uint _pricePerToken, uint _percentageForArtist, uint _percentageForLiquidity, uint _percentageOfCommitedFunds, uint _intervalLength , uint _intervalTotalLength) public {
         //user must approve this contract address to transfer tokens from artist token address before calling this function
-        require(msg.sender == admin, "Only contract deployer can call this function");
+        require(msg.sender == contractDeployer, "Only contract deployer can call this function");
         require(artistTokenSales[_artistAddress].ArtistTokenAddress == 0x0000000000000000000000000000000000000000, "Artist token sale is already created");
         require(_percentageForLiquidity <= 100, "Percentage for liquidity cannot be higher than 100");
         require(_percentageForArtist <= 100, "Percentage for Artist cannot be higher than 100");
-//
-        ArtistToken artistToken = ArtistToken(_artistTokenAddress);
 
+        ArtistToken artistToken = ArtistToken(_artistTokenAddress);
          
         setupSale1(_artistAddress, _artistTokenAddress, _exchangeAddress, _pricePerToken, _percentageForLiquidity);
         setupSale2(_artistAddress, _artistTokenAddress, _pricePerToken, _percentageOfCommitedFunds, _intervalLength, _intervalTotalLength);
-    }
 
-    function percentage(address _artistAddress, address _artistTokenAddress, uint _percentageForArtist, uint _percentageForLiquidity, uint _pricePerToken) public {
-        ArtistToken artistToken = ArtistToken(_artistTokenAddress);
         uint PercentageForSale = 100 - (_percentageForArtist + _percentageForLiquidity);
-        
+
         //calculate and apply percentage of token supply for sale
         uint TokenSupplyMultiplied = artistToken.totalSupply() * 100;
         artistTokenSales[_artistAddress].TokensForSale = PercentageForSale * TokenSupplyMultiplied / 10000;
-        artistTokenSales[_artistAddress].TokenSupplyMultiplied = TokenSupplyMultiplied;
-        //artistToken.transfer(address(this), _artistAddress, _percentageForArtist * TokenSupplyMultiplied / 10000, true, "0x");
-//
         
-        //address(this).delegatecall(abi.encodeWithSignature("StartSale()"));
-    }
+        artistToken.transfer(address(this), _artistAddress, _percentageForArtist * TokenSupplyMultiplied / 10000, true, "0x");
 
-    function transferFunds(address _artistAddress, address _artistTokenAddress, uint _percentageForArtist, uint _percentageForLiquidity, uint _pricePerToken) public {
-        ArtistToken artistToken = ArtistToken(_artistTokenAddress);
-
-        uint sendAmount = _percentageForArtist * artistTokenSales[_artistAddress].TokenSupplyMultiplied / 10000;
-        
-        artistToken.transfer(address(this), _artistAddress,sendAmount , true, "0x");
-        //emit CreateSaleEvent(_artistAddress, _artistTokenAddress, _pricePerToken);
+        emit CreateSaleEvent(_artistAddress, _artistTokenAddress, _pricePerToken);
+        address(this).delegatecall(abi.encodeWithSignature("StartSale()"));
     }
-    //function CreateSaleCalculatePercentages(address _artistAddress, address _artistTokenAddress, address payable _exchangeAddress, uint _pricePerToken, uint _percentageForArtist, uint _percentageForLiquidity, uint _percentageOfCommitedFunds,uint _intervalLength ,uint _intervalTotalLength) public {
-    //    require(msg.sender == admin, "Only contract deployer can call this function");
-    //    require(artistTokenSales[_artistAddress].ArtistTokenAddress != 0x0000000000000000000000000000000000000000, "Artist token sale is already created");
-    //    require(_percentageForLiquidity <= 100, "Percentage for liquidity cannot be higher than 100");
-    //    require(_percentageForArtist <= 100, "Percentage for Artist cannot be higher than 100");
-////
-    //    ArtistToken artistToken = ArtistToken(_artistTokenAddress);
-//
-    //    
-    //    artistToken.transfer(address(this), _artistAddress, _percentageForArtist * TokenSupplyMultiplied / 10000, false, "0x");
-    //    
-    //    emit CreateSaleEvent(_artistAddress, _artistTokenAddress, _pricePerToken);
-    //    address(this).delegatecall(abi.encodeWithSignature("StartSale()"));
-    //}
 
     function setupSale1(address _artistAddress, address _artistTokenAddress, address payable _exchangeAddress, uint _pricePerToken, uint _percentageForLiquidity) internal {
         ArtistToken artistToken = ArtistToken(_artistTokenAddress);
+        artistToken.mint();
 
         artistTokenSales[_artistAddress].ArtistTokenAddress = _artistTokenAddress;
         artistTokenSales[_artistAddress].ExchangeAddress = _exchangeAddress;
@@ -127,7 +97,6 @@ contract ArtistTokenSale {
         artistTokenSales[_artistAddress].InitialReturnPricePerCoin = PercentageForReturnPrice;
 
         artistTokenSales[_artistAddress].ReturnPriceReducePerInterval = artistTokenSales[_artistAddress].InitialReturnPricePerCoin/_intervalTotalLength;
-        //artistTokenSales[_artistAddress].ReturnPriceReducePerInterval = artistTokenSales[_artistAddress].InitialReturnPricePerCoin;
 
         artistTokenSales[_artistAddress].LockedPerInterval = artistTokenSales[_artistAddress].ReturnPriceReducePerInterval;
 
@@ -153,10 +122,10 @@ contract ArtistTokenSale {
         require (buyAmount <= artistToken.balanceOf(address(this)), "Not enough tokens left to buy");
 
         artistTokenSales[_artistAddress].TokensForSale -= buyAmount;
-        artistToken.transfer(address(this), msg.sender, buyAmount, false, "0x");
+        artistToken.transfer(address(this), msg.sender, buyAmount, true, "0x");
 
         if (artistTokenSales[_artistAddress].TokensForSale == 0) {
-
+            
             Exchange artistExchange = Exchange(artistTokenSales[_artistAddress].ExchangeAddress);
             //work out token %
             uint tokenAmount = artistToken.balanceOf(address(this)) * 100;
@@ -198,7 +167,7 @@ contract ArtistTokenSale {
             uint sendToArtist = artistTokenSales[msg.sender].LockedPerInterval * result;
 
             artistTokenSales[msg.sender].ArtistLastClaimTime += result * artistTokenSales[msg.sender].IntervalLength;
-            artistToken.transfer(address(this), msg.sender, sendToArtist, false, "0x");
+            artistToken.transfer(address(this), msg.sender, sendToArtist, true, "0x");
         
     }
 
@@ -216,7 +185,7 @@ contract ArtistTokenSale {
         uint pricePerToken = artistTokenSales[_artistAddress].InitialReturnPricePerCoin - priceRemovePerToken;
         uint nativeReturnAmount = _amount * pricePerToken;
 
-        artistToken.transfer(msg.sender, address(this), _amount, false, "0x");
+        artistToken.transfer(msg.sender, address(this), _amount, true, "0x");
         artistTokenSales[_artistAddress].TokensForSale += _amount;
         payable(msg.sender).transfer(nativeReturnAmount);
     }
@@ -225,7 +194,7 @@ contract ArtistTokenSale {
         return(artistTokenSales[_artistAddress]);
     }
 
-    function getExchangeAddress(address _artistAddress) public view returns(address) {
-        return(artistTokenSales[_artistAddress].ExchangeAddress);
+    function getExchangeAddress(address _address) public view returns(address) {
+        return createdExchangeAddresses[_address];
     }
 }

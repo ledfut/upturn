@@ -16,7 +16,7 @@ contract Marketplace {
         //address must approve this contract with nft collection before calling this function
         LSP8IdentifiableDigitalAsset NFT = LSP8IdentifiableDigitalAsset(_nftAddress);
         
-        NFT.transfer(msg.sender, address(this), _nftID, false, "0x");
+        NFT.transfer(msg.sender, address(this), _nftID, true, "0x");
         nftOwner[_nftAddress][_nftID] = msg.sender;
         listingPrice[_nftAddress][_nftID] = _listingPrice;
         listedIdsInCollection[_nftAddress].push(_nftID);
@@ -39,7 +39,7 @@ contract Marketplace {
         }
         delete nftOwner[_nftAddress][_nftID];
         delete listingPrice[_nftAddress][_nftID];
-        NFT.transfer(address(this), msg.sender, _nftID, false, "0x");
+        NFT.transfer(address(this), msg.sender, _nftID, true, "0x");
         
         uint percentage = NFT.getRoyaltyPercentage() * 100;
         uint fee = msg.value * percentage / 10000;
@@ -60,7 +60,7 @@ contract Marketplace {
         require (nftOwner[_nftAddress][_nftID] == msg.sender, "Only the owner of this NFT can remove its lisiting");
         
         LSP8IdentifiableDigitalAsset NFT = LSP8IdentifiableDigitalAsset(_nftAddress);
-        NFT.transfer(address(this), msg.sender, _nftID, false, "0x");
+        NFT.transfer(address(this), msg.sender, _nftID, true, "0x");
 
         //remove nft as listed on marketplace
         for (uint i = 0; i < listedIdsInCollection[_nftAddress].length; i++) {
