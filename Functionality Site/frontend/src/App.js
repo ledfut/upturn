@@ -334,25 +334,6 @@ function App() {
           </Row>
 
           <Row className="mb-3">
-            <Card style={{ color: "#000", }}>
-              <Form>
-                <Form.Group controlId="formCreateToken">
-                  <Form.Label>Approve this contract</Form.Label>
-                  <Col> 
-                    <Form.Text className="text-muted">Artist Address</Form.Text>
-                    <Form.Control type="artistAddress" placeholder="Enter Artist Address:" onChange={handleChangeArtistAddress}/>
-                    <Button variant="secondary"
-                    onClick={approveContract}>Approve Contract</Button>
-
-                    <Button onClick={percentage}>percentage</Button>
-                    <Button onClick={sendFunds}>Send funds</Button>
-                  </Col>
-                </Form.Group>
-              </Form>
-            </Card>
-          </Row>
-
-          <Row className="mb-3">
             <Card  style={{ color: "#000", }}>
               <Form>
                 <Form.Group controlId="formCreateToken">
