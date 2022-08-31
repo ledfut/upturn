@@ -1,3 +1,4 @@
+
 # UP.TURN Digital Asset Backed Artist Tokens and Infrastructure
 For the first time, artists will be able to sell tokens backed by their catalogue of digital assets. In this world of intangible value it is hard to truly know what gives an NFT or token its value, or whether there is any backing other than speculation. The UP.TURN concept creates a new pathway for artists to capitalise on their catalogue of digital assets. Artist income has always been  at the forefront of the music industry, especially on the independent side. With roughly 70% of revenue into the music industry being controlled by the major 4 labels, it has never been more important for an artist to be in direct contact with their fans and their income.
 
@@ -36,12 +37,15 @@ by users and contracts. This is highly important as this allows an artist token
 to gain locked liquidity for a certain amount of time via artist token (LSP7) sales and 
 digital asset (LSP8) sales.
 
-The AT Exchange has not been developed for this iteration of the front end however the smart contracts have been written and tested.
+## Staking
 
+For users to recieve royalties from marketplace sales and artist fees they must stake 
+the associated artist token. This allows for a easy and concise way to track as well
+send out fees for each user
+## Presentation
+Full Presentation - https://www.youtube.com/watch?v=dnZW0ojFjzE
 
-—
-
-Can you add some details regarding any other features or Smart Contracts you’ve developed for the project? I’ve listed the main descriptions above but feel free to add anything you need.
+Smart contracts more in depth - https://youtu.be/lAlQdmJqVMc
 
 ## Main Contributors
 LEDFUT @ledfut_nft - ledfut@tmps.io
