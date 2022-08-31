@@ -50,12 +50,14 @@ Smart contracts more in depth - https://youtu.be/lAlQdmJqVMc
 ## Functionality Artist Token Sale Site
 https://divine-cell-5004.on.fleek.co/
 
-[Functional Site Guide:]
+Functional Site Guide:
 - With the LUKSO UP Extension enabled [metamask disabled] click 'connect wallet'
 - Approve contract so you can use your LSP7 Artist Token [created with token generator]
 - From there you put in the Artist Address [your UP address] and the token into create token exchange [it creates an exchange]
 - Then you get the Exchange Address
 - With that you can create a Token sale
+
+
 [Input:]
 - The artist address [your UP address]
 - Artist Token address
