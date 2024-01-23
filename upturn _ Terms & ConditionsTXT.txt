@@ -1,0 +1,40 @@
+﻿Terms and Conditions for 'upturn' on the LUKSO Network
+Last Updated: January 1, 2024
+1. Introduction
+These Terms and Conditions ("Terms") constitute a legally binding agreement between you ("User" or "You") and 'upturn', a protocol on the LUKSO network for deploying LSP7 tokens, including any associated brands or services (collectively referred to as the "Service"). By accessing or utilizing 'upturn', you unequivocally agree to comply with and be bound by these Terms and our Privacy Policy. Should you disagree with any part of these Terms, you must refrain from using the Service.
+2. Eligibility
+The Service is strictly available to individuals who are at least eighteen (18) years of age or have attained the legal age of majority in their respective jurisdiction. By engaging with 'upturn', you affirm that you possess the requisite legal capacity and authority to enter into these Terms.
+3. Exclusions of Use
+Usage of 'upturn' is expressly prohibited within jurisdictions that are subject to international sanctions or embargoes.
+4. Intellectual Property Rights
+All intellectual property rights associated with 'upturn', including but not limited to trademarks, trade names, service marks, logos, and domain names, are exclusively owned by or duly licensed to us. These Terms do not confer any form of license or rights to the User, save for those expressly stipulated herein.
+5. License to Use 'upturn'
+Subject to your full compliance with these Terms, 'upturn' hereby grants you a non-exclusive, non-transferable, and revocable license to use the Service for its intended purpose. This license is contingent upon your adherence to these Terms and may be revoked at our discretion.
+6. Usage of 'upturn'
+You are obligated to use 'upturn' in a lawful manner, strictly adhering to all applicable local, national, and international laws and regulations.
+7. Absolute Removal of Liability
+'upturn' and its associated brands categorically disclaim all forms of liability for any misuse of the platform. This disclaimer extends to, but is not limited to, unauthorized or unlawful creation, deployment, or utilization of tokens. You acknowledge that your use of 'upturn' is at your sole risk and discretion, and you shall bear full responsibility for any legal, financial, or other consequences that may ensue.
+8. Termination
+We reserve the unilateral right to terminate or suspend your access to 'upturn' at any time, without prior notice, for any reason whatsoever.
+9. Disclaimer of Warranties
+'upturn' is provided on an "AS IS" and "AS AVAILABLE" basis without any warranties, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement.
+10. Limitation of Liability
+In no event shall 'upturn', its affiliates, directors, officers, employees, agents, licensors, or service providers be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or related to your use of or inability to use 'upturn'.
+11. Indemnification
+You agree to defend, indemnify, and hold harmless 'upturn' and its affiliates, officers, directors, employees, and agents from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out of or relating to your violation of these Terms or your use of the Service.
+12. Governing Law
+These Terms shall be governed and construed in accordance with the laws of the jurisdiction in which 'upturn' is headquartered, without regard to its conflict of law provisions.
+13. Dispute Resolution
+Any disputes arising under or in connection with these Terms shall be resolved through binding arbitration in accordance with the rules and procedures of the jurisdiction in which 'upturn' is headquartered.
+14. Severability
+Should any provision of these Terms be deemed invalid or unenforceable by a court of competent jurisdiction, such invalidity or unenforceability shall not affect the enforceability of the remaining provisions of these Terms, which shall remain in full force and effect.
+15. Entire Agreement
+These Terms, together with our Privacy Policy, constitute the entire agreement between you and 'upturn' with respect to the Service and supersede all prior or contemporaneous understandings or agreements, written or oral, regarding such subject matter.
+16. Changes to Terms
+We reserve the right, at our sole discretion, to modify or replace these Terms at any time. Your continued use of 'upturn' following any changes to these Terms constitutes acceptance of those changes.
+17. Tax Responsibility
+You are solely responsible for all tax obligations arising from your use of 'upturn'.
+18. Contact Information
+Should you have any inquiries regarding these Terms, please contact us at ledfut@tmps.io.
+19. Privacy Policy
+Our Privacy Policy, as provided separately, governs the collection, use, and sharing of information related to your use of 'upturn'.
