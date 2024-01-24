@@ -1,24 +1,33 @@
 ﻿Privacy Policy for 'upturn' on the LUKSO Network
 Last Updated: December 12, 2023
+
 1. Overview
 This Privacy Policy delineates the modalities of data collection, usage, and dissemination practices of 'upturn', a protocol on the LUKSO network for deploying LSP7 tokens, and its associated brands (collectively referred to herein as "we", "us", "our"). Your access to and use of 'upturn' constitutes your acknowledgment of and consent to the provisions of this Privacy Policy. If you disagree with any aspect of this policy, you are advised not to use our Services.
+
 2. Commitment to Data Privacy
 'upturn' is steadfastly committed to ensuring the privacy and protection of our users' data. We adhere to a strict policy of not withholding any user data.
+
 3. Scope of Data Collection
 In accordance with our commitment to minimal data collection:
 a. No Personal Data Collection: We do not collect, store, or process any personal data of our users.
 b. Blockchain Data: The only information available is that which is inherently public and recorded on the LUKSO blockchain, including transaction data. This information is not under our custody or control.
+
 4. Use of Information
 Since 'upturn' does not collect any personal data, there is no usage of user data within our operational framework.
+
 5. Disclosure of Information
 Consistent with our no-data-collection policy:
 a. No Third-Party Sharing: We do not share, sell, rent, or trade personal information with any third parties, as we do not collect such information.
 b. Legal Compliance: In the event of a legal requirement, we may disclose public blockchain data, which is already accessible to the public.
+
 6. User Rights
 Given that 'upturn' does not collect personal data, traditional user data rights such as access, correction, deletion, and portability are inapplicable.
+
 7. Data Security
 'upturn' does not store or process personal data, thus significantly reducing any risk of data breaches relating to personal information. Users are, however, advised to be mindful of the public nature of blockchain transactions.
+
 8. Amendments to this Policy
 We reserve the right to amend this Privacy Policy at our discretion and at any time. Such modifications will be effective immediately upon posting the updated policy on the 'upturn' platform. Continued use of 'upturn' following any such changes shall indicate your acknowledgement of such changes and agreement to be bound by the terms and conditions of such changes.
+
 9. Contact Information
 For any inquiries or concerns regarding this Privacy Policy, please contact us at ledfut@tmps.io.
