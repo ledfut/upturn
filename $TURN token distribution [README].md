@@ -3,22 +3,36 @@
 Total Supply: 1,000,000,000 (1B)
 
 [Reserved (8%)]
+
 Project Treasury: 20,000,000
+
 Creator: 10,000,000
+
 Future Community: 50,000,000
 
+
 [Distributed by Asset Type]
+
 Genesis MP: 220,000,000
+
 Original MP: 52,380,940
+
 Original MP Reserve: 52,380,940
+
 $RUN Token: 223,214,295
+
 DISTRICT MP: 148,809,530
+
 KEEZ MP: 116,666,272
 
 [Other MPs]
+
 Metaheads: 24,111,025
+
 Ibiza: 20,052,000
+
 Berlin: 2,228,000
+
 upturn 2025: 62,384,000
 
 Distribution Status: ✓ COMPLETED
