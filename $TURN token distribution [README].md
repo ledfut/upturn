@@ -1,94 +1,28 @@
-Upturn Token Distribution Document
-January 30, 2025
-Total Supply: 1,000,000,000 (1 Billion) Tokens
+# $TURN Final Distribution Report
 
-Core Allocations (8%)
+Total Supply: 1,000,000,000 (1B)
 
-Project Treasury
+[Reserved (8%)]
+Project Treasury: 20,000,000
+Creator: 10,000,000
+Future Community: 50,000,000
 
-Percentage: 2%
-Amount: ~20,000,000 tokens
-Purpose: Platform development and sustainability
+[Distributed by Asset Type]
+Genesis MP: 220,000,000
+Original MP: 52,380,940
+Original MP Reserve: 52,380,940
+$RUN Token: 223,214,295
+DISTRICT MP: 148,809,530
+KEEZ MP: 116,666,272
 
+[Other MPs]
+Metaheads: 24,111,025
+Ibiza: 20,052,000
+Berlin: 2,228,000
+upturn 2025: 62,384,000
 
-Creator
-
-Percentage: 1%
-Amount: ~10,000,000 tokens
-Purpose: Recognition of platform creation
-
-
-Future Community Pool
-
-Percentage: 5%
-Amount: ~50,000,000 tokens
-Purpose: Future mint pass purchasers and community engagement rewards
-
-
-
-Community Distribution (92%)
-
-Genesis MP
-
-Holders: 84
-Percentage: 22%
-Total Amount: ~220,000,000 tokens
-Per Holder: 2,619,047 tokens
-Status: Whale Tier
-
-
-Original MP
-
-Holders: 20
-Percentage: 14%
-Total Amount: ~140,000,000 tokens
-Per Holder: 2,619,047 tokens
-Status: Whale Tier
-
-
-$RUN Token
-
-Holders: 100
-Percentage: 21%
-Total Amount: ~210,000,000 tokens
-Per Holder: ~2,100,000 tokens
-Status: Whale Tier
-
-
-DISTRICT MP
-
-Holders: 156
-Percentage: 14%
-Total Amount: ~140,000,000 tokens
-Per Holder: ~897,436 tokens
-Status: Mid Tier
-
-
-KEEZ MP
-
-Holders: 150
-Percentage: 11%
-Total Amount: ~110,000,000 tokens
-Per Holder: ~733,333 tokens
-Status: Mid Tier
-
-
-Other MPs (Metaheads, Ibiza, Berlin, upturn 2025)
-
-Holders: 68
-Percentage: 10%
-Total Amount: ~100,000,000 tokens
-Per Holder: ~700,000 tokens
-Status: Base Tier
-
-
-
-Token Distribution Characteristics
-Tier Structure
-
-Whale Tier: ~2,100,000+ tokens per holder
-Mid Tier: ~700,000-1,000,000 tokens per holder
-Base Tier: Up to ~700,000 tokens per holder
+Distribution Status: ✓ COMPLETED
+Total Tokens Allocated: ~1,000,000,000
 
 Distribution Rationale
 
