@@ -36,43 +36,65 @@ Berlin: 2,228,000
 upturn 2025: 62,384,000
 
 Distribution Status: ✓ COMPLETED
+
 Total Tokens Allocated: ~1,000,000,000
+
+-----
 
 Distribution Rationale
 
 Equal distribution within same-tier groups
+
 Clear tier differentiation
+
 Recognition of early adoption
+
 Reward for platform participation
+
+-----
 
 Future Community Pool Usage Guidelines
 
 New Mint Pass Purchasers
 
 Allocation based on mint pass tier
+
 Distribution aligned with base tier structure
 
+-----
 
 Community Engagement
 
 Platform participation rewards
+
 Community contribution recognition
+
 Ecosystem development initiatives
 
-
+-----
 
 Distribution Principles
 
 One-time distribution event
+
 No trading infrastructure provided
+
 This token is nott to be speculated upon
+
 upturn does NOT promote trading of this token
+
 Community recognition emphasis
+
+-----
 
 Notes
 
 All allocations are final and will be distributed at token launch
+
 No liquidity pools or trading infrastructure will be provided
+
 Token serves as platform utility and community recognition marker
+
 Future community pool distribution will follow established guidelines
+
 All distributions are subject to platform terms and conditions
