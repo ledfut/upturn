@@ -61,7 +61,7 @@ Allocation based on mint pass tier
 
 Distribution aligned with tier structure
 
-Music player use
+Music player [player one] use
 
 Music purchases from player one
 
