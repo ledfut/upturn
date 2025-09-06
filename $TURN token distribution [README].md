@@ -59,7 +59,11 @@ New Mint Pass Purchasers
 
 Allocation based on mint pass tier
 
-Distribution aligned with base tier structure
+Distribution aligned with tier structure
+
+Music player use
+
+Music purchases from player one
 
 -----
 
@@ -79,7 +83,7 @@ One-time distribution event
 
 No trading infrastructure provided
 
-This token is nott to be speculated upon
+This token is not to be speculated upon
 
 upturn does NOT promote trading of this token
 
@@ -91,7 +95,7 @@ Notes
 
 All allocations are final and will be distributed at token launch
 
-No liquidity pools or trading infrastructure will be provided
+No liquidity pools or trading infrastructure will be provided by upturn or associated parties.
 
 Token serves as platform utility and community recognition marker
 
